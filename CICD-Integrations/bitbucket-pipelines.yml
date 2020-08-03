@@ -1,4 +1,4 @@
-image: ubuntu-latest
+image: python:3.7.3
 
 pipelines:
   default:
@@ -7,12 +7,11 @@ pipelines:
         caches:
           - pip
         script: 
-          - export AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+          - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
           - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
           - export AWS_S3_BUCKET=$AWS_S3_BUCKET
           - export REPO_NAME=$REPO_NAME
           - export AWS_REGION=$AWS_REGION
-          - mkdir ./temp
           - pip install awscli
-          - tar -zcvf ./temp/$UPLOAD_NAME.tar.gz ./
-          - aws s3 cp ./temp/$UPLOAD_NAME.tar.gz s3://$AWS_S3_BUCKET/
+          - tar -zcvf /tmp/$REPO_NAME.tar.gz ./
+          - aws s3 cp /tmp/$REPO_NAME.tar.gz s3://$AWS_S3_BUCKET/
