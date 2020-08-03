@@ -1,0 +1,21 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: pip install awscli
+  displayName: Install AWS CLI tools
+
+- script: mkdir ./temp
+  displayName: Create directory to allow tar creation
+
+- script: tar -zcvf ./temp/$(UPLOAD_NAME).tar.gz ./
+  displayName: Create tar file
+
+- script: aws s3 cp ./temp/$(UPLOAD_NAME).tar.gz s3://$(AWS_S3_BUCKET)/
+  env:
+    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY)
+    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_KEY)
+  displayName: Upload tar to S3

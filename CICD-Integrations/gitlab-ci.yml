@@ -1,0 +1,19 @@
+variables:
+    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY
+    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_KEY
+
+image: "python:3.7"
+
+before_script:
+    - pip install awscli
+    
+stages:
+    - s3upload
+
+s3:
+    stage: s3upload
+    script:
+    - mkdir ./temp
+    - tar -zcvf ./temp/$UPLOAD_NAME.tar.gz ./
+    - aws s3 cp ./temp/$UPLOAD_NAME.tar.gz s3://$AWS_S3_BUCKET/
+
