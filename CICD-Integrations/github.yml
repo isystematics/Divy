@@ -1,15 +1,11 @@
-name: CI
+name: Send_For_Security_Review
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-#
-#
-# NOTE: MUST BE PLACED IN "./.github/workflows/" in order to run properly.
+
 on:
   push:
-    branches: [ master ]
+    branches: [ Security ]
   pull_request:
-    branches: [ master ]
+    branches: [ Security ]
 
 jobs:
   build:
@@ -30,7 +26,9 @@ jobs:
         aws s3 cp ./temp/$UPLOAD_NAME.tar.gz s3://$AWS_S3_BUCKET/
       env: 
         AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-east-1'
         UPLOAD_NAME: ${{ secrets.UPLOAD_NAME  }}
+        # Optionally set the name of the project where it is visible instead of encrypting it in secrets
+        #UPLOAD_NAME: 'Awesome_Project_1'
